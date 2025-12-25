@@ -5,8 +5,8 @@
 #include <nRF24L01.h>
 #include <RF24.h>
 
-#define CE_Pin 8
-#define CSN_Pin 7
+const int CE_Pin = 8;
+const int CSN_Pin = 7;
 #define address_byte "00001"
 
 RF24 radio(CE_Pin, CSN_Pin); // CE, CSN
