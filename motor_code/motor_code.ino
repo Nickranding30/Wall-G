@@ -1,22 +1,30 @@
+#include <Drive.h>
+
 //motor test code using PWM
 //Nick
 
-const int IN1 = 14;
-const int IN2 = 15;
-const int IN3 = 16;
-const int IN4 = 17;
+Drive drive(14,15,16,17);
+const int ENA = 5; //PWM enable
+const int ENB = 6; //PWM enable
 
 void setup() {
-  pinMode (IN1, OUTPUT);
-  pinMode (IN2, OUTPUT);
-  pinMode (IN3, OUTPUT);
-  pinMode (IN4, OUTPUT);
+  
+  drive.begin();
+  analogWrite (ENA, 255);
+  analogWrite (ENB, 255);
+
 
 }
 
 void loop() {
-  digitalWrite (IN1, HIGH);
-  digitalWrite (IN2, LOW);
-  digitalWrite (IN3, HIGH);
-  digitalWrite (IN4, LOW);
+
+  drive.forward();
+  delay(2000);
+  drive.brake();
+  delay(2000);
+  drive.backward();
+  delay(2000);
+  drive.brake();
+  delay(2000);
+ 
 }
