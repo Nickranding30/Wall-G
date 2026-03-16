@@ -13,11 +13,11 @@
 const int CE_Pin = 8;
 const int CSN_Pin = 7;
 
-const byte address_1[6] = address_byte_1;
-const byte address_2[6] = address_byte_2;
-
 #define address_byte_1 "00001"
 #define address_byte_2 "00002"
+
+const byte address_1[6] = address_byte_1;
+const byte address_2[6] = address_byte_2;
 
 //Joystick
 #define joystick_x A7 // x-axis
