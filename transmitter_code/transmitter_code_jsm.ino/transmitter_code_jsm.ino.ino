@@ -19,18 +19,27 @@ const int CSN_Pin = 7;
 const byte address_1[6] = address_byte_1;
 const byte address_2[6] = address_byte_2;
 
-//Joystick
-#define joystick_x A7 // x-axis
-#define joystick_y A6 // y-axis
-
+//uint8_t data[3];
+int data[3];
 
 RF24 radio(CE_Pin, CSN_Pin); // CE, CSN
+
+//JOYSTICK
+const int joystick_x = A7; // x-axis
+const int joystick_y = A6; // y-axis
+const int joystick_btn = A5; // button
+
+int xvalue;
+int yvalue;
 
 //////////////////////////////////////////////
 // MAIN SETUP
 //////////////////////////////////////////////
 
 void setup() {
+  pinMode(joystick_x, INPUT);
+  pinMode(joystick_y, INPUT);
+  pinMode(joystick_btn, INPUT_PULLUP);
   Serial.begin(9600);
   radio.begin();
   radio.openWritingPipe(address_1);
@@ -44,8 +53,32 @@ void setup() {
 //////////////////////////////////////////////
 
 void loop() {
-  const char text[] = "monkey";
-  radio.write(&text, sizeof(text));
-  Serial.print ("Sent\n");
-  delay(1000);
+  int xvalue = analogRead(joystick_x);
+  int yvalue = analogRead(joystick_y);
+  int button = digitalRead(button);
+
+/*
+  // Map Values
+  int r_xvalue = map(xvalue, 0, 1023, 0, 255);
+  int r_yvalue = map(yvalue, 0, 1023, 0, 255);
+*/
+
+  // Payload
+  //data[0] = r_xvalue;
+  //data[1] = r_yvalue;
+  data[0] = xvalue;
+  data[1] = yvalue;
+  data[2] = button;
+
+
+  Serial.print ("x value: ");
+  Serial.print (xvalue);
+  Serial.print (" | y value: ");
+  Serial.print (yvalue);
+  Serial.print (" | button: ");
+  Serial.println (button);
+
+  radio.write(&data, sizeof(data));
+  delay(100);
+
 }
