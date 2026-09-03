@@ -1,5 +1,7 @@
 #include "Motor.h"
 
+const int MIN_PWM = 70;
+
 Motor::Motor(uint8_t pwmPin, uint8_t in1Pin, uint8_t in2Pin) {
     _pwmPin = pwmPin;
     _in1Pin = in1Pin;
@@ -15,16 +17,22 @@ void Motor::init() {
 void Motor::setSpeed(int speed) {
     speed = constrain(speed, -255, 255);
 
+    if (speed == 0) {
+        digitalWrite(_in1Pin, LOW);
+        digitalWrite(_in2Pin, LOW);
+        analogWrite(_pwmPin, 0);
+        return;
+    }
+
+    int duty = map(abs(speed), 1, 255, MIN_PWM, 255);
+
     if (speed > 0) {
         digitalWrite(_in1Pin, HIGH);
         digitalWrite(_in2Pin, LOW);
-    } else if (speed < 0) {
-        digitalWrite(_in1Pin, LOW);
-        digitalWrite(_in2Pin, HIGH);
     } else {
         digitalWrite(_in1Pin, LOW);
-        digitalWrite(_in2Pin, LOW);
+        digitalWrite(_in2Pin, HIGH);
     }
 
-    analogWrite(_pwmPin, abs(speed));
+    analogWrite(_pwmPin, duty);
 }
