@@ -12,6 +12,7 @@ void Motor::init() {
     pinMode(_pwmPin, OUTPUT);
     pinMode(_in1Pin, OUTPUT);
     pinMode(_in2Pin, OUTPUT);
+    setSpeed(0);
 }
 
 void Motor::setSpeed(int speed) {
